@@ -27,8 +27,13 @@ class VideoProcessingController extends Controller
         }
 
         // Get the oldest unprocessed video
-        // ON actor_id, locales_id, voices_id, state join actors, locales, voices, countries  
         $nextVideo = VideoQueue::whereNull('process_time_start')
+            ->select('video_queues.id as db', 
+                    'video_queues.*',
+                    'actors.*',
+                    'locales.*',
+                    'voices.*',
+                    'countries.*')
             ->join('actors', 'actors.id', '=', 'video_queues.actor_id')
             ->join('locales', 'locales.id', '=', 'video_queues.locales_id')
             ->join('voices', 'voices.id', '=', 'video_queues.voices_id')
@@ -39,7 +44,7 @@ class VideoProcessingController extends Controller
         return response()->json($nextVideo);
     }
 
-    public function startProcessing(Request $request)
+    public function startProcessing(Request $request): JsonResponse
     {
         // check if the video is already being processed
         $processingVideo = VideoQueue::whereNotNull('process_time_start')
@@ -47,16 +52,24 @@ class VideoProcessingController extends Controller
             ->first();
 
         if ($processingVideo) {
-            return response()->json(['error' => 'Video is already being processed']);
+            return response()->json(['error' => 'Video is already being processed'], 400);
         }
 
-        $videoQueue = VideoQueue::find($request->id);
+        $videoQueue = VideoQueue::where('id', $request->id)
+            ->whereNull('process_time_start')
+            ->first();
+        
+        if (!$videoQueue) {
+            return response()->json(['error' => 'Video queue not found with id ' . $request->id .' or already being processed'], 404);
+        }
+
         $videoQueue->process_time_start = now();
         $videoQueue->save();
+
         return response()->json($videoQueue);
     }
 
-    public function endProcessing(Request $request)
+    public function endProcessing(Request $request): JsonResponse
     {
         // check if the video is being processed
         $processingVideo = VideoQueue::whereNotNull('process_time_start')
@@ -64,12 +77,44 @@ class VideoProcessingController extends Controller
             ->first();
 
         if (!$processingVideo) {
-            return response()->json(['error' => 'Video is not being processed']);
+            return response()->json(['error' => 'Video is not being processed'], 400);
         }
 
-        $videoQueue = VideoQueue::find($request->id);
+        // Parse the JSON data field if it exists
+        $data = $request->has('data') ? json_decode($request->data, true) : [];
+        $id = $data['id'] ?? $request->id;
+        
+        $videoQueue = VideoQueue::where('id', $id)->first();
+        
+        if (!$videoQueue) {
+            return response()->json(['error' => 'Video queue not found'], 404);
+        }
+
+        $audioName = $videoQueue->id.'_'.$videoQueue->actor_id.'_'.$videoQueue->locales_id.'_'.$videoQueue->voices_id.'_'.$videoQueue->state;
+        $videoName = $videoQueue->id.'_'.$videoQueue->actor_id.'_'.$videoQueue->locales_id.'_'.$videoQueue->voices_id.'_'.$videoQueue->state;
+        
+        // Handle uploaded files
+        if ($request->hasFile('audio')) {
+            $audioExtension = $request->file('audio')->getClientOriginalExtension();
+            $audioPath = $request->file('audio')->storeAs('audios_processed', $audioName.'.'.$audioExtension, 'public');
+            $videoQueue->voice_local_path = $audioPath;
+        }
+
+        if ($request->hasFile('video')) {
+            $videoExtension = $request->file('video')->getClientOriginalExtension();
+            $videoPath = $request->file('video')->storeAs('videos_processed', $videoName.'.'.$videoExtension, 'public');
+            $videoQueue->video_local_path = $videoPath;
+        }
+
+        // Store translated text from the JSON data if provided
+        if (isset($data['translated_text'])) {
+           $videoQueue->translated_text = $data['translated_text'];
+        }
+
         $videoQueue->process_time_end = now();
+        $videoQueue->status = 1;
         $videoQueue->save();
-        return response()->json($videoQueue);
+        
+        return response()->json(['message' => 'Video processing completed']);
     }
 }

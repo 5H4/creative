@@ -54,6 +54,17 @@ class VideoQueueCrudController extends CrudController
         CRUD::column('process_time_start');
         CRUD::column('created_at');
 
+        // Add video preview column
+        CRUD::column('video_local_path')->type('closure')->function(function($entry) {
+            if ($entry->video_local_path) {
+                return '<video width="320" height="240" controls>
+                            <source src="' . asset('storage/' . $entry->video_local_path) . '" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>';
+            }
+            return 'No video available';
+        })->escaped(false);
+
         // Remove default buttons
         $this->crud->removeButton('update');
         $this->crud->removeButton('delete');

@@ -13,5 +13,10 @@ Route::get('admin/createactor', function () {
 
 Route::get('admin/api/voices', [LocaleVoiceCrudController::class, 'getVoices']);
 
-
 Route::get('videos/next-to-process', [VideoProcessingController::class, 'getNextVideo']);
+
+Route::get('videos/start-processing', [VideoProcessingController::class, 'startProcessing']);
+
+Route::withoutMiddleware(['web', 'csrf'])->group(function () {
+    Route::post('videos/end-processing', [VideoProcessingController::class, 'endProcessing']);
+});

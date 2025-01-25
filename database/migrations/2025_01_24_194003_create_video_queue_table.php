@@ -26,6 +26,7 @@ return new class extends Migration
             $table->integer('inference_steps')->nullable();
             $table->bigInteger('seed')->nullable();
             $table->tinyInteger('status')->nullable()->comment('1: success, 2: failed');
+            $table->string('translated_text')->nullable();
             $table->string('video_url')->nullable();
             $table->string('video_local_path')->nullable();
             $table->string('voice_local_path')->nullable();
@@ -45,6 +46,7 @@ return new class extends Migration
             $table->integer('volume_change');
             $table->text('prosody_contour');
             $table->text('text');
+            $table->string('translated_text')->nullable();
             $table->decimal('guidance_scale', 8, 2)->nullable();
             $table->integer('inference_steps')->nullable();
             $table->bigInteger('seed')->nullable();
