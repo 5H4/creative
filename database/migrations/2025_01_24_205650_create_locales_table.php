@@ -1,0 +1,191 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('locales', function (Blueprint $table) {
+            $table->id();
+            $table->string('code', 15);
+            $table->string('name', 63);
+            $table->boolean('is_favorite')->default(false);
+            $table->boolean('is_translation_default')->default(false);
+        });
+
+        // Insert the locales data
+        $locales = [
+            ['id' => 1, 'code' => 'af-ZA', 'name' => 'Afrikaans (South Africa)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 2, 'code' => 'am-ET', 'name' => 'Amharic (Ethiopia)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 3, 'code' => 'ar-AE', 'name' => 'Arabic (United Arab Emirates)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 4, 'code' => 'ar-BH', 'name' => 'Arabic (Bahrain)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 5, 'code' => 'ar-DZ', 'name' => 'Arabic (Algeria)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 6, 'code' => 'ar-EG', 'name' => 'Arabic (Egypt)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 7, 'code' => 'ar-IQ', 'name' => 'Arabic (Iraq)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 8, 'code' => 'ar-JO', 'name' => 'Arabic (Jordan)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 9, 'code' => 'ar-KW', 'name' => 'Arabic (Kuwait)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 10, 'code' => 'ar-LB', 'name' => 'Arabic (Lebanon)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 11, 'code' => 'ar-LY', 'name' => 'Arabic (Libya)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 12, 'code' => 'ar-MA', 'name' => 'Arabic (Morocco)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 13, 'code' => 'ar-OM', 'name' => 'Arabic (Oman)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 14, 'code' => 'ar-QA', 'name' => 'Arabic (Qatar)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 15, 'code' => 'ar-SA', 'name' => 'Arabic (Saudi Arabia)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 16, 'code' => 'ar-SY', 'name' => 'Arabic (Syria)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 17, 'code' => 'ar-TN', 'name' => 'Arabic (Tunisia)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 18, 'code' => 'ar-YE', 'name' => 'Arabic (Yemen)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 19, 'code' => 'as-IN', 'name' => 'Assamese (India)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 20, 'code' => 'az-AZ', 'name' => 'Azerbaijani (Latin, Azerbaijan)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 21, 'code' => 'bg-BG', 'name' => 'Bulgarian (Bulgaria)', 'is_favorite' => false, 'is_translation_default' => true],
+            ['id' => 22, 'code' => 'bn-BD', 'name' => 'Bangla (Bangladesh)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 23, 'code' => 'bn-IN', 'name' => 'Bengali (India)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 24, 'code' => 'bs-BA', 'name' => 'Bosnian (Bosnia and Herzegovina)', 'is_favorite' => false, 'is_translation_default' => true],
+            ['id' => 25, 'code' => 'ca-ES', 'name' => 'Catalan (Spain)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 26, 'code' => 'cs-CZ', 'name' => 'Czech (Czechia)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 27, 'code' => 'cy-GB', 'name' => 'Welsh (United Kingdom)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 28, 'code' => 'da-DK', 'name' => 'Danish (Denmark)', 'is_favorite' => false, 'is_translation_default' => true],
+            ['id' => 29, 'code' => 'de-AT', 'name' => 'German (Austria)', 'is_favorite' => false, 'is_translation_default' => true],
+            ['id' => 30, 'code' => 'de-CH', 'name' => 'German (Switzerland)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 31, 'code' => 'de-DE', 'name' => 'German (Germany)', 'is_favorite' => false, 'is_translation_default' => true],
+            ['id' => 32, 'code' => 'el-GR', 'name' => 'Greek (Greece)', 'is_favorite' => false, 'is_translation_default' => true],
+            ['id' => 33, 'code' => 'en-AU', 'name' => 'English (Australia)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 34, 'code' => 'en-CA', 'name' => 'English (Canada)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 35, 'code' => 'en-GB', 'name' => 'English (United Kingdom)', 'is_favorite' => false, 'is_translation_default' => true],
+            ['id' => 36, 'code' => 'en-HK', 'name' => 'English (Hong Kong SAR)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 37, 'code' => 'en-IE', 'name' => 'English (Ireland)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 38, 'code' => 'en-IN', 'name' => 'English (India)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 39, 'code' => 'en-KE', 'name' => 'English (Kenya)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 40, 'code' => 'en-NG', 'name' => 'English (Nigeria)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 41, 'code' => 'en-NZ', 'name' => 'English (New Zealand)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 42, 'code' => 'en-PH', 'name' => 'English (Philippines)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 43, 'code' => 'en-SG', 'name' => 'English (Singapore)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 44, 'code' => 'en-TZ', 'name' => 'English (Tanzania)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 45, 'code' => 'en-US', 'name' => 'English (United States)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 46, 'code' => 'en-ZA', 'name' => 'English (South Africa)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 47, 'code' => 'es-AR', 'name' => 'Spanish (Argentina)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 48, 'code' => 'es-BO', 'name' => 'Spanish (Bolivia)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 49, 'code' => 'es-CL', 'name' => 'Spanish (Chile)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 50, 'code' => 'es-CO', 'name' => 'Spanish (Colombia)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 51, 'code' => 'es-CR', 'name' => 'Spanish (Costa Rica)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 52, 'code' => 'es-CU', 'name' => 'Spanish (Cuba)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 53, 'code' => 'es-DO', 'name' => 'Spanish (Dominican Republic)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 54, 'code' => 'es-EC', 'name' => 'Spanish (Ecuador)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 55, 'code' => 'es-ES', 'name' => 'Spanish (Spain)', 'is_favorite' => false, 'is_translation_default' => true],
+            ['id' => 56, 'code' => 'es-GQ', 'name' => 'Spanish (Equatorial Guinea)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 57, 'code' => 'es-GT', 'name' => 'Spanish (Guatemala)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 58, 'code' => 'es-HN', 'name' => 'Spanish (Honduras)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 59, 'code' => 'es-MX', 'name' => 'Spanish (Mexico)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 60, 'code' => 'es-NI', 'name' => 'Spanish (Nicaragua)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 61, 'code' => 'es-PA', 'name' => 'Spanish (Panama)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 62, 'code' => 'es-PE', 'name' => 'Spanish (Peru)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 63, 'code' => 'es-PR', 'name' => 'Spanish (Puerto Rico)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 64, 'code' => 'es-PY', 'name' => 'Spanish (Paraguay)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 65, 'code' => 'es-SV', 'name' => 'Spanish (El Salvador)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 66, 'code' => 'es-US', 'name' => 'Spanish (United States)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 67, 'code' => 'es-UY', 'name' => 'Spanish (Uruguay)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 68, 'code' => 'es-VE', 'name' => 'Spanish (Venezuela)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 69, 'code' => 'et-EE', 'name' => 'Estonian (Estonia)', 'is_favorite' => false, 'is_translation_default' => true],
+            ['id' => 70, 'code' => 'eu-ES', 'name' => 'Basque', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 71, 'code' => 'fa-IR', 'name' => 'Persian (Iran)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 72, 'code' => 'fi-FI', 'name' => 'Finnish (Finland)', 'is_favorite' => false, 'is_translation_default' => true],
+            ['id' => 73, 'code' => 'fil-PH', 'name' => 'Filipino (Philippines)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 74, 'code' => 'fr-BE', 'name' => 'French (Belgium)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 75, 'code' => 'fr-CA', 'name' => 'French (Canada)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 76, 'code' => 'fr-CH', 'name' => 'French (Switzerland)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 77, 'code' => 'fr-FR', 'name' => 'French (France)', 'is_favorite' => false, 'is_translation_default' => true],
+            ['id' => 78, 'code' => 'ga-IE', 'name' => 'Irish (Ireland)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 79, 'code' => 'gl-ES', 'name' => 'Galician', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 80, 'code' => 'gu-IN', 'name' => 'Gujarati (India)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 81, 'code' => 'he-IL', 'name' => 'Hebrew (Israel)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 82, 'code' => 'hi-IN', 'name' => 'Hindi (India)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 83, 'code' => 'hr-HR', 'name' => 'Croatian (Croatia)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 84, 'code' => 'hu-HU', 'name' => 'Hungarian (Hungary)', 'is_favorite' => false, 'is_translation_default' => true],
+            ['id' => 85, 'code' => 'hy-AM', 'name' => 'Armenian (Armenia)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 86, 'code' => 'id-ID', 'name' => 'Indonesian (Indonesia)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 87, 'code' => 'is-IS', 'name' => 'Icelandic (Iceland)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 88, 'code' => 'it-IT', 'name' => 'Italian (Italy)', 'is_favorite' => false, 'is_translation_default' => true],
+            ['id' => 89, 'code' => 'iu-Cans-CA', 'name' => 'Inuktitut (Syllabics, Canada)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 90, 'code' => 'iu-Latn-CA', 'name' => 'Inuktitut (Latin, Canada)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 91, 'code' => 'ja-JP', 'name' => 'Japanese (Japan)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 92, 'code' => 'jv-ID', 'name' => 'Javanese (Latin, Indonesia)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 93, 'code' => 'ka-GE', 'name' => 'Georgian (Georgia)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 94, 'code' => 'kk-KZ', 'name' => 'Kazakh (Kazakhstan)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 95, 'code' => 'km-KH', 'name' => 'Khmer (Cambodia)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 96, 'code' => 'kn-IN', 'name' => 'Kannada (India)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 97, 'code' => 'ko-KR', 'name' => 'Korean (Korea)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 98, 'code' => 'lo-LA', 'name' => 'Lao (Laos)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 99, 'code' => 'lt-LT', 'name' => 'Lithuanian (Lithuania)', 'is_favorite' => false, 'is_translation_default' => true],
+            ['id' => 100, 'code' => 'lv-LV', 'name' => 'Latvian (Latvia)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 101, 'code' => 'mk-MK', 'name' => 'Macedonian (North Macedonia)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 102, 'code' => 'ml-IN', 'name' => 'Malayalam (India)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 103, 'code' => 'mn-MN', 'name' => 'Mongolian (Mongolia)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 104, 'code' => 'mr-IN', 'name' => 'Marathi (India)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 105, 'code' => 'ms-MY', 'name' => 'Malay (Malaysia)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 106, 'code' => 'mt-MT', 'name' => 'Maltese (Malta)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 107, 'code' => 'my-MM', 'name' => 'Burmese (Myanmar)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 108, 'code' => 'nb-NO', 'name' => 'Norwegian Bokmål (Norway)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 109, 'code' => 'ne-NP', 'name' => 'Nepali (Nepal)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 110, 'code' => 'nl-BE', 'name' => 'Dutch (Belgium)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 111, 'code' => 'nl-NL', 'name' => 'Dutch (Netherlands)', 'is_favorite' => false, 'is_translation_default' => true],
+            ['id' => 112, 'code' => 'or-IN', 'name' => 'Oriya (India)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 113, 'code' => 'pa-IN', 'name' => 'Punjabi (India)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 114, 'code' => 'pl-PL', 'name' => 'Polish (Poland)', 'is_favorite' => false, 'is_translation_default' => true],
+            ['id' => 115, 'code' => 'ps-AF', 'name' => 'Pashto (Afghanistan)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 116, 'code' => 'pt-BR', 'name' => 'Portuguese (Brazil)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 117, 'code' => 'pt-PT', 'name' => 'Portuguese (Portugal)', 'is_favorite' => false, 'is_translation_default' => true],
+            ['id' => 118, 'code' => 'ro-RO', 'name' => 'Romanian (Romania)', 'is_favorite' => false, 'is_translation_default' => true],
+            ['id' => 119, 'code' => 'ru-RU', 'name' => 'Russian (Russia)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 120, 'code' => 'si-LK', 'name' => 'Sinhala (Sri Lanka)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 121, 'code' => 'sk-SK', 'name' => 'Slovak (Slovakia)', 'is_favorite' => false, 'is_translation_default' => true],
+            ['id' => 122, 'code' => 'sl-SI', 'name' => 'Slovenian (Slovenia)', 'is_favorite' => false, 'is_translation_default' => true],
+            ['id' => 123, 'code' => 'so-SO', 'name' => 'Somali (Somalia)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 124, 'code' => 'sq-AL', 'name' => 'Albanian (Albania)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 125, 'code' => 'sr-Latn-RS', 'name' => 'Serbian (Latin, Serbia)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 126, 'code' => 'sr-RS', 'name' => 'Serbian (Cyrillic, Serbia)', 'is_favorite' => false, 'is_translation_default' => true],
+            ['id' => 127, 'code' => 'su-ID', 'name' => 'Sundanese (Indonesia)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 128, 'code' => 'sv-SE', 'name' => 'Swedish (Sweden)', 'is_favorite' => false, 'is_translation_default' => true],
+            ['id' => 129, 'code' => 'sw-KE', 'name' => 'Swahili (Kenya)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 130, 'code' => 'sw-TZ', 'name' => 'Swahili (Tanzania)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 131, 'code' => 'ta-IN', 'name' => 'Tamil (India)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 132, 'code' => 'ta-LK', 'name' => 'Tamil (Sri Lanka)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 133, 'code' => 'ta-MY', 'name' => 'Tamil (Malaysia)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 134, 'code' => 'ta-SG', 'name' => 'Tamil (Singapore)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 135, 'code' => 'te-IN', 'name' => 'Telugu (India)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 136, 'code' => 'th-TH', 'name' => 'Thai (Thailand)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 137, 'code' => 'tr-TR', 'name' => 'Turkish (Turkey)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 138, 'code' => 'uk-UA', 'name' => 'Ukrainian (Ukraine)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 139, 'code' => 'ur-IN', 'name' => 'Urdu (India)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 140, 'code' => 'ur-PK', 'name' => 'Urdu (Pakistan)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 141, 'code' => 'uz-UZ', 'name' => 'Uzbek (Latin, Uzbekistan)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 142, 'code' => 'vi-VN', 'name' => 'Vietnamese (Vietnam)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 143, 'code' => 'wuu-CN', 'name' => 'Chinese (Wu, Simplified)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 144, 'code' => 'yue-CN', 'name' => 'Chinese (Cantonese, Simplified)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 145, 'code' => 'zh-CN', 'name' => 'Chinese (Mandarin, Simplified)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 146, 'code' => 'zh-CN-guangxi', 'name' => 'Chinese (Guangxi Accent Mandarin, Simplified)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 147, 'code' => 'zh-CN-henan', 'name' => 'Chinese (Zhongyuan Mandarin Henan, Simplified)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 148, 'code' => 'zh-CN-liaoning', 'name' => 'Chinese (Northeastern Mandarin, Simplified)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 149, 'code' => 'zh-CN-shaanxi', 'name' => 'Chinese (Zhongyuan Mandarin Shaanxi, Simplified)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 150, 'code' => 'zh-CN-shandong', 'name' => 'Chinese (Jilu Mandarin, Simplified)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 151, 'code' => 'zh-CN-sichuan', 'name' => 'Chinese (Southwestern Mandarin, Simplified)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 152, 'code' => 'zh-HK', 'name' => 'Chinese (Cantonese, Traditional)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 153, 'code' => 'zh-TW', 'name' => 'Chinese (Taiwanese Mandarin, Traditional)', 'is_favorite' => false, 'is_translation_default' => false],
+            ['id' => 154, 'code' => 'zu-ZA', 'name' => 'Zulu (South Africa)', 'is_favorite' => false, 'is_translation_default' => false],
+        ];
+
+        DB::table('locales')->insert($locales);
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('locales');
+    }
+};
